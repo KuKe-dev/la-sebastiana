@@ -1,0 +1,14 @@
+.loading {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    animation: loading 3s infinite linear;
+}
+.loader {
+    width: 40px;
+}
