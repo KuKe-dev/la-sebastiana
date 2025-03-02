@@ -1,0 +1,91 @@
+.product {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+    max-width: 300px;
+}
+
+.product:hover {
+    transform: translateY(-5px);
+}
+
+.product-img {
+    width: 70%;
+    aspect-ratio: 1/1;
+    border-radius: 8px;
+}
+
+.product-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
+}
+
+.product-price {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #800040; /* Dark maroon */
+    margin: 0.5rem 0;
+}
+
+.buy-button,
+.details-button {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 0.5rem;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.buy-button {
+    background: #800040;
+    color: white;
+}
+
+.details-button {
+    background: #e6e6e6;
+    color: #333;
+}
+
+.buy-button:hover {
+    background: #660033;
+}
+
+.details-button:hover {
+    background: #cccccc;
+}
+
+.edit-button,
+.delete-button {
+    width: 100%;
+    padding: 0.6rem;
+    margin-top: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.edit-button {
+    background: #800040;
+    color: white;
+}
+
+.delete-button {
+    background: #ff4d4d;
+    color: white;
+}
+
+.delete-button:hover {
+    background: #cc0000;
+}
+
+.edit-button:hover {
+    background: #660033;
+}

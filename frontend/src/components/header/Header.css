@@ -1,0 +1,47 @@
+.navbar {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+.userbar {
+    height: 100px;
+    background-color: var(--background-color);
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+.userbar-logo{
+    border-radius: 100%;
+}
+.userbar-search {
+    background: none;
+    padding: 15px 20px;
+    border: solid 1px #fff;
+    border-radius: 15px;
+    color: white;
+}
+.userbar-search::placeholder {
+    color: #fff;
+    opacity: 1;
+}
+.userbar-home {
+    color: #fff;
+    background: none;
+    border: none;
+    font-size: large;
+    font-family: var(--font);
+    font-weight: 800;
+}
+.userbar-home:hover {
+    color: var(--primary-color);
+}
+.userbar-button {
+    background: none;
+    border: none;
+    padding: 0;
+}
+.userbar-button img {
+    color: white;
+    width: 40px;
+}

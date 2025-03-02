@@ -1,3 +1,4 @@
+/* Loader container */
 .loading {
     display: flex;
     gap: 20px;
@@ -6,9 +7,24 @@
     height: 100vh;
     font-size: 2rem;
     font-weight: bold;
+    background-color: var(--primary-background);
     color: var(--primary-color);
-    animation: loading 3s infinite linear;
 }
+
+/* Loader SVG */
 .loader {
     width: 40px;
+    will-change: transform;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .loading {
+        font-size: 1.5rem;
+        gap: 10px;
+    }
+
+    .loader {
+        width: 30px;
+    }
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { GetProducts } from "../../scripts/products";
-import { Products } from "./product/products";
-import './productVisualizer.css'
+import { GetProducts } from "../../services/api";
+import { Products } from "../Products/Products";
+import './ProductVisualizer.css'
 
 // eslint-disable-next-line react/prop-types
 export function ProductVisualizer({ categories = [], materials = [] }) {
@@ -12,7 +12,7 @@ const [vizFilters, setVizFilters] = useState({
     categories: categories,
     materials: materials,
 })
-
+// eslint-disable-next-line
 const [filteredProducts, setFilteredProducts] = useState([])
 
 useEffect(() => {

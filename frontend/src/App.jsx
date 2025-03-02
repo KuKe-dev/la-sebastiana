@@ -1,12 +1,10 @@
 import {Routes, Route, useRoutes, BrowserRouter} from 'react-router'
 
-import './App.css'
+import './styles/App.css'
 
 import { Home } from './pages/User/home.jsx'
-import { Login } from './pages/Protected/login.jsx'
-import { Admin } from './pages/Protected/admin.jsx'
-
-import { GetProducts} from './scripts/products.js'
+import { Login } from './pages/auth/login.jsx'
+import { Admin } from './pages/admin/admin.jsx'
 
 function App() {
 

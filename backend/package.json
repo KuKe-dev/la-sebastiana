@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "dev": "concurrently \"npx nodemon index.js\" \"cd ../frontend && npm run dev\""
+    "dev": "concurrently \"npx nodemon ./src/server.js\" \"cd ../frontend && npm run dev\""
   },
   "keywords": [],
   "author": "",
@@ -26,5 +26,10 @@
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "bcrypt"
+    ]
   }
 }
