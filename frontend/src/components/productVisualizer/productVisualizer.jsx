@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { GetProducts } from "../../services/api";
+import { GetAllProducts } from "../../services/api";
 import { Products } from "../Products/Products";
 import './ProductVisualizer.css'
 
 // eslint-disable-next-line react/prop-types
 export function ProductVisualizer({ categories = [], materials = [] }) {
 
-const products = GetProducts()
+const products = GetAllProducts()
 
 const [vizFilters, setVizFilters] = useState({
     categories: categories,
@@ -33,15 +33,10 @@ useEffect(() => {
             const categoryMatch =
                 vizFilters.categories.length === 0 || vizFilters.categories.some((cat) => productFilters.categories.includes(cat));
 
-            console.log("Category Match:", categoryMatch);
-
             const materialMatch =
                 vizFilters.materials.length === 0 || vizFilters.materials.some((mat) => productFilters.materials.includes(mat));
 
-            console.log("Material Match:", materialMatch);
-
             const match = categoryMatch && materialMatch;
-            console.log("Match:", match);
 
             return match ? product : null;
         }));

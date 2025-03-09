@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { GetProducts, DeleteProduct } from "../../services/api";
+import { GetAllProducts, DeleteProduct } from "../../services/api";
+import { EditProduct } from "../EditProduct/EditProduct.jsx";
 import './Products.css';
 
 /**
@@ -14,7 +15,7 @@ import './Products.css';
 // eslint-disable-next-line react/prop-types
 export function Products({ categories = [], materials = [] }) {
 
-const products = GetProducts(); // Fetch all products
+const products = GetAllProducts(); // Fetch all products
 
     //* State for filters
 const [vizFilters, setVizFilters] = useState({
@@ -64,12 +65,16 @@ useEffect(() => {
 return (
     <main className="products">
         {filteredProducts.map((product) => (
+            <>
+            <section id="EditProduct" style={{ display: 'none' }}>
+            <EditProduct id={product.id}/>
+            </section>
             <article key={product.id} className="product">
                 <h2 className="product-name">{product.name}</h2>
                 {product.img && (
                     <img
                     className="product-img"
-                    src={`http://localhost:1234/api/product/img?id=${product.id}`}
+                    src={`http://localhost:1234/api/product/${product.id}/img`}
                     width="20%"
                     style={{ aspectRatio: "1/1", objectFit: "cover" }}
                     alt={product.name} //* Add alt text for accessibility
@@ -80,14 +85,21 @@ return (
                 <p className="product-stock">Stock: {product.stock}</p>
                 <p className="product-filters">Categories: {JSON.parse(product.filters).categories.join(', ')}</p>
                 <p className="product-filters">Materials: {JSON.parse(product.filters).materials.join(', ')}</p>
-                <button className="edit-button">Editar</button>
+                <button 
+                    className="edit-button"
+                    onClick={() => {
+                        document.getElementById('EditProduct').style.display = 'block';
+                    }}
+                >
+                Editar</button>
                 <button
                     className="delete-button"
-                    onClick={() => DeleteProduct(product.id)}
+                    onClick={() => { DeleteProduct(product.id) }}
                 >
                     Eliminar
                 </button>
             </article>
+            </>
         ))}
     </main>
 );

@@ -48,7 +48,7 @@ return (
         <h1 className="title">Admin</h1>
         <h2 className="subtitle">Agregar producto</h2>
         <section className="form">
-            <form onSubmit={(e) => { AddProduct(e); window.location.reload(); }} method="POST" id="addProduct-form">
+            <form onSubmit={(e) => { AddProduct(e) }} method="POST" id="addProduct-form">
                 <input type='text' id="name" placeholder='*Product name*' />
                 <textarea id="description" rows={5} maxLength={250} placeholder='Description' />
 
@@ -95,7 +95,7 @@ return (
         </section>
 
         <h2>Visualizador de productos</h2>
-        <ProductVisualizer />
+        <ProductVisualizer categories={["mascotas"]} materials={["ceramica"]}/>
         </div>
     </>
 

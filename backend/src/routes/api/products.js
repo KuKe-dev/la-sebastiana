@@ -5,7 +5,11 @@ import fs from 'fs'; //* For file system operations
 import path from 'path'; //* For handling file paths
 import { fileURLToPath } from 'url'; //* For converting file URLs to paths
 
+//* Router
 export const productsRouter = Router();
+
+//* Stuff needed
+//*------------------------------------------------------------------------
 
 //* Reconstruct __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url); // Get the file path of the current module
@@ -21,31 +25,50 @@ if (!fs.existsSync(imagesDir)) {
     fs.mkdirSync(imagesDir, { recursive: true });
 }
 
-//* Get all products or a single product by ID
+
+//* Endpoints
+//*------------------------------------------------------------------------
+
+//* Api menu
+productsRouter.get('/', async (req, res) => {
+    res.send('<ul><li><a href="/api/products">All Products</a></li><li><a href="/api/product/:id">Single Product</a></li></ul>');
+});
+
+//* Get all products
 productsRouter.get('/products', async (req, res) => {
     try {
-        const { id } = req.query;
-
-        if (id) {
-            //* Fetch a single product by ID
-            const query = await pool.query(`SELECT * FROM "Products" WHERE id = $1`, [id]);
-            const result = query.rows[0];
-            if (!result) {
-                return res.status(404).json({ message: 'Product not found' });
-            }
-            res.json(result);
-        } else {
-            //* Fetch all products
-            const query = await pool.query(`SELECT * FROM "Products"`);
-            res.json(query.rows);
-        }
+        const query = await pool.query(`SELECT * FROM "Products"`);
+        res.json(query.rows);
     } catch (err) {
         console.error('Error fetching products:', err);
         res.status(500).json({ message: 'Internal server error' });
     }
 });
 
-//* Add a new product with an image
+//* Get a single product by ID
+productsRouter.get('/product/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).json({ message: 'Product ID is required' });
+        }
+
+        const query = await pool.query(`SELECT * FROM "Products" WHERE id = $1`, [id]);
+        const result = query.rows[0];
+
+        if (!result) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        res.json(result);
+    } catch (err) {
+        console.error('Error fetching product:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+//* Add a new product
 productsRouter.post('/product', upload.single('img'), async (req, res) => {
     try {
         const { name, description, price, stock, filters } = req.body;
@@ -76,42 +99,35 @@ productsRouter.post('/product', upload.single('img'), async (req, res) => {
     }
 });
 
-//* Get a product image by ID
-productsRouter.get('/product/img', async (req, res) => {
+//* Update a product by ID
+productsRouter.put('/product/:id', async (req, res) => {
     try {
-        const { id } = req.query;
+        const { id } = req.params;
+        const { name, description, price, stock, filters } = req.body;
 
-        if (!id) {
-            return res.status(400).json({ message: 'Product ID is required' });
+        if (!id || !name || !description || !price || !stock || !filters) {
+            return res.status(400).json({ message: 'Missing required fields' });
         }
 
-        //* Fetch product details
-        const query = await pool.query(`SELECT * FROM "Products" WHERE id = $1`, [id]);
+        const jsonFilters = JSON.stringify(filters);
+        console.log(jsonFilters);
+        const query = await pool.query(
+            `UPDATE "Products" SET "name" = $1, "description" = $2, "price" = $3, "stock" = $4, "filters" = $5 WHERE "id" = $6 RETURNING *`,
+            [name, description, price, stock, jsonFilters, id]
+        );
         const result = query.rows[0];
 
-        if (!result) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-
-        //* Send the product image
-        const imgName = `${result.img}.jpg`;
-        const imgPath = path.join(imagesDir, imgName);
-
-        if (!fs.existsSync(imgPath)) {
-            return res.status(404).json({ message: 'Image not found' });
-        }
-
-        res.sendFile(imgPath);
+        res.json(result);
     } catch (err) {
-        console.error('Error fetching product image:', err);
+        console.error('Error updating product:', err);
         res.status(500).json({ message: 'Internal server error' });
     }
 });
 
 //* Delete a product by ID
-productsRouter.delete('/product', async (req, res) => {
+productsRouter.delete('/product/:id', async (req, res) => {
     try {
-        const { id } = req.query;
+        const { id } = req.params;
 
         if (!id) {
             return res.status(400).json({ message: 'Product ID is required' });
@@ -139,6 +155,38 @@ productsRouter.delete('/product', async (req, res) => {
         res.json(result);
     } catch (err) {
         console.error('Error deleting product:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+//* Get a product image by ID
+productsRouter.get('/product/:id/img', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).json({ message: 'Product ID is required' });
+        }
+
+        //* Fetch product details
+        const query = await pool.query(`SELECT * FROM "Products" WHERE id = $1`, [id]);
+        const result = query.rows[0];
+
+        if (!result) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        //* Send the product image
+        const imgName = `${result.img}.jpg`;
+        const imgPath = path.join(imagesDir, imgName);
+
+        if (!fs.existsSync(imgPath)) {
+            return res.status(404).json({ message: 'Image not found' });
+        }
+
+        res.sendFile(imgPath);
+    } catch (err) {
+        console.error('Error fetching product image:', err);
         res.status(500).json({ message: 'Internal server error' });
     }
 });
