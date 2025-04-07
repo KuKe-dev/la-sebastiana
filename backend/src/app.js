@@ -11,7 +11,7 @@ app.use(corsConfig); // Enable CORS
 app.use(express.json()); // Parse JSON request bodies
 app.use(cookieParser()); // Parse cookies
 
-//* Route handlers
+//* Route Handles
 app.use('/api', productsRouter); // Mount products routes under /api
 app.use('/auth', loginRouter); // Mount authentication routes under /auth
 
